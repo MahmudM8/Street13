@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setup Street 13 Firebase</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            setDoc,
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // USE YOUR ACTUAL CONFIG - Get from Firebase Console
+        const firebaseConfig = {
+         apiKey: "AIzaSyCcVOxMeTgcwpy7gM5zaJ_cheocvaIXIzE",
+         authDomain: "street-13-restaurant.firebaseapp.com",
+         projectId: "street-13-restaurant",
+         storageBucket: "street-13-restaurant.firebasestorage.app",
+         messagingSenderId: "848426454008",
+         appId: "1:848426454008:web:ae8ded40e42f77ac92240d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function setupDatabase() {
+            try {
+                console.log("Starting database setup...");
+                
+                // 1. Create Settings Document
+                await setDoc(doc(db, "settings", "config"), {
+                    businessName: "STREET 13",
+                    whatsappNumber: "2348131313131",
+                    phoneNumber: "+234 813 131 3131",
+                    email: "contact@street13.com",
+                    address: "13 Food Street, Lagos Island, Lagos",
+                    businessHours: "Everyday: 7AM - 11PM",
+                    deliveryFee: 500,
+                    minOrderAmount: 1000,
+                    socialMedia: {
+                        instagram: "@street13",
+                        twitter: "@street13food",
+                        facebook: "street13food",
+                        tiktok: "@street13food"
+                    },
+                    aboutText: "Fast food for the urban lifestyle. Quick bites, bold flavors, no compromises. Born on the streets, made for the streets.",
+                    updatedAt: serverTimestamp()
+                });
+                console.log("✓ Settings created");
+
+                // 2. Create Sample Menu Items
+                const menuItems = [
+                    {
+                        id: "burger1",
+                        name: "Traffic Light Burger",
+                        description: "Triple patty with red, yellow, and green toppings",
+                        price: 3200,
+                        category: "burgers",
+                        imageUrl: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1398&q=80",
+                        stock: 50,
+                        featured: true,
+                        active: true,
+                        tags: ["BESTSELLER"],
+                        calories: 850,
+                        prepTime: 15
+                    },
+                    {
+                        id: "shawarma1",
+                        name: "Street Shawarma",
+                        description: "Chicken shawarma with spicy street sauce",
+                        price: 1800,
+                        category: "wraps",
+                        imageUrl: "https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80",
+                        stock: 30,
+                        featured: true,
+                        active: true,
+                        tags: ["FAST"],
+                        calories: 450,
+                        prepTime: 10
+                    },
+                    {
+                        id: "fries1",
+                        name: "Asphalt Fries",
+                        description: "Crispy fries with special street seasoning",
+                        price: 1200,
+                        category: "sides",
+                        imageUrl: "https://images.unsplash.com/photo-1576107232684-1279f7b71308?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+                        stock: 100,
+                        featured: false,
+                        active: true,
+                        tags: ["CRISPY"],
+                        calories: 320,
+                        prepTime: 8
+                    },
+                    {
+                        id: "shake1",
+                        name: "Concrete Milkshake",
+                        description: "Thick milkshake with chocolate and nuts",
+                        price: 1500,
+                        category: "drinks",
+                        imageUrl: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
+                        stock: 40,
+                        featured: false,
+                        active: true,
+                        tags: ["SWEET"],
+                        calories: 280,
+                        prepTime: 5
+                    },
+                    {
+                        id: "pizza1",
+                        name: "Roadside Pizza",
+                        description: "Street-style pizza with bold toppings",
+                        price: 2800,
+                        category: "pizza",
+                        imageUrl: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=1381&q=80",
+                        stock: 25,
+                        featured: true,
+                        active: true,
+                        tags: ["NEW"],
+                        calories: 1200,
+                        prepTime: 20
+                    },
+                    {
+                        id: "salad1",
+                        name: "Stoplight Salad",
+                        description: "Fresh greens with red, yellow, and green veggies",
+                        price: 2000,
+                        category: "healthy",
+                        imageUrl: "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=1384&q=80",
+                        stock: 20,
+                        featured: false,
+                        active: true,
+                        tags: ["HEALTHY"],
+                        calories: 180,
+                        prepTime: 7
+                    }
+                ];
+
+                for (const item of menuItems) {
+                    await setDoc(doc(db, "menuItems", item.id), {
+                        ...item,
+                        createdAt: serverTimestamp(),
+                        updatedAt: serverTimestamp()
+                    });
+                }
+                console.log("✓ Menu items created");
+
+                // 3. Create Sample Orders
+                const sampleOrders = [
+                    {
+                        id: "ORD001",
+                        customerName: "John Doe",
+                        customerPhone: "+2348123456789",
+                        customerEmail: "john@example.com",
+                        deliveryAddress: "123 Lagos Street, Lagos Island",
+                        orderType: "delivery",
+                        items: [
+                            { itemId: "burger1", name: "Traffic Light Burger", quantity: 2, price: 3200 },
+                            { itemId: "fries1", name: "Asphalt Fries", quantity: 1, price: 1200 }
+                        ],
+                        subtotal: 7600,
+                        deliveryFee: 500,
+                        total: 8100,
+                        status: "delivered",
+                        paymentStatus: "paid",
+                        notes: "Extra ketchup please",
+                        createdAt: new Date(Date.now() - 86400000), // 1 day ago
+                        updatedAt: new Date(Date.now() - 86400000)
+                    },
+                    {
+                        id: "ORD002",
+                        customerName: "Jane Smith",
+                        customerPhone: "+2348098765432",
+                        orderType: "pickup",
+                        items: [
+                            { itemId: "shawarma1", name: "Street Shawarma", quantity: 3, price: 1800 }
+                        ],
+                        subtotal: 5400,
+                        deliveryFee: 0,
+                        total: 5400,
+                        status: "preparing",
+                        paymentStatus: "paid",
+                        createdAt: new Date(Date.now() - 3600000), // 1 hour ago
+                        updatedAt: new Date(Date.now() - 3600000)
+                    }
+                ];
+
+                for (const order of sampleOrders) {
+                    await setDoc(doc(db, "orders", order.id), order);
+                }
+                console.log("✓ Sample orders created");
+
+                // 4. Create Sample Messages
+                const sampleMessages = [
+                    {
+                        id: "MSG001",
+                        name: "Mike Johnson",
+                        email: "mike@example.com",
+                        phone: "+2348076543210",
+                        message: "What are your delivery hours on Sundays?",
+                        type: "contact",
+                        read: false,
+                        createdAt: new Date(Date.now() - 7200000) // 2 hours ago
+                    },
+                    {
+                        id: "MSG002",
+                        name: "Sarah Williams",
+                        email: "sarah@example.com",
+                        message: "Great service! The burger was amazing.",
+                        type: "feedback",
+                        read: true,
+                        createdAt: new Date(Date.now() - 172800000), // 2 days ago
+                        readAt: new Date(Date.now() - 172700000)
+                    }
+                ];
+
+                for (const msg of sampleMessages) {
+                    await setDoc(doc(db, "messages", msg.id), msg);
+                }
+                console.log("✓ Sample messages created");
+
+                console.log("✅ Database setup complete!");
+                alert("Firebase collections created successfully!");
+
+            } catch (error) {
+                console.error("Error setting up database:", error);
+                alert("Error: " + error.message);
+            }
+        }
+
+        // Run setup when page loads
+        window.onload = setupDatabase;
+    </script>
+</head>
+<body>
+    <h1>Setting up Street 13 Firebase Database...</h1>
+    <p>Check browser console for progress.</p>
+</body>
+</html>

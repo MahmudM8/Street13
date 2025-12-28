@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street 13 | Admin Dashboard</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Urbanist:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ===== ADMIN THEME ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Traffic Color Palette */
+            --primary-red: #e63946;
+            --traffic-yellow: #ffd166;
+            --traffic-green: #06d6a0;
+            --asphalt: #2b2d42;
+            --concrete: #8d99ae;
+            --cream-bg: #fffaf3;
+            --cream-card: #fef7ec;
+            --cream-border: #e9e1d4;
+            --text-dark: #1d1d1f;
+            --text-light: #5c5c5c;
+            --white: #ffffff;
+            --sidebar-bg: #1a1c2e;
+            --sidebar-text: #a0a4b8;
+        }
+
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background: var(--cream-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* ===== LOGIN PAGE ===== */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-red), var(--asphalt));
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-box h1 {
+            color: var(--primary-red);
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+        }
+        
+        .login-box h2 {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: #d63031;
+        }
+        
+        .error-message {
+            color: var(--primary-red);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            min-height: 20px;
+        }
+
+        /* ===== ADMIN DASHBOARD ===== */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 250px;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary-red);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .sidebar-nav i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 250px;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER BAR ===== */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .header-bar h1 {
+            color: var(--primary-red);
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-red);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* ===== CARDS ===== */
+        .admin-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .admin-card h3 {
+            color: var(--primary-red);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-card h3 i {
+            color: var(--traffic-yellow);
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+            font-family: 'Urbanist', sans-serif;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-save {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-save:hover {
+            background: var(--asphalt);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-add {
+            background: var(--traffic-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn-add:hover {
+            background: #45a049;
+        }
+
+        .btn-edit {
+            background: var(--traffic-yellow);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-right: 5px;
+        }
+
+        .btn-delete {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-small {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            border-radius: 3px;
+        }
+
+        /* ===== MESSAGES LIST ===== */
+        .messages-list {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+
+        .message-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .message-item:last-child {
+            border-bottom: none;
+        }
+
+        .message-item.unread {
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            color: var(--primary-red);
+        }
+
+        .message-date {
+            color: #999;
+        }
+
+        .message-body {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .message-type {
+            display: inline-block;
+            background: var(--primary-red);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            margin-top: 10px;
+        }
+
+        /* ===== MENU ITEMS ===== */
+        .menu-items-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .menu-item-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .menu-item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .menu-item-info {
+            flex: 1;
+        }
+
+        .menu-item-name {
+            font-weight: 600;
+            color: var(--primary-red);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .menu-item-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            max-width: 500px;
+        }
+
+        .menu-item-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .menu-item-price {
+            font-weight: 600;
+            color: var(--primary-red);
+        }
+
+        .menu-item-category {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        /* ===== ORDERS LIST ===== */
+        .orders-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .order-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-customer {
+            font-weight: 600;
+            color: var(--primary-red);
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .order-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .order-status.confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .order-status.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .order-items {
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .order-total {
+            font-weight: 600;
+            color: var(--primary-red);
+            font-size: 1.1rem;
+            text-align: right;
+            padding-top: 10px;
+            border-top: 2px solid #eee;
+        }
+
+        /* ===== STATS CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--cream-bg);
+            color: var(--primary-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 15px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* ===== TABS ===== */
+        .section-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== NOTIFICATIONS ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            z-index: 10000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            font-weight: 500;
+            max-width: 350px;
+            color: white;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification i {
+            font-size: 1.2rem;
+        }
+
+        .notification.success {
+            background: var(--traffic-green);
+        }
+
+        .notification.error {
+            background: var(--primary-red);
+        }
+
+        .notification.info {
+            background: var(--traffic-yellow);
+            color: var(--text-dark);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-red);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+                padding: 20px 0;
+            }
+            
+            .sidebar-header h2,
+            .sidebar-header p,
+            .sidebar-nav span {
+                display: none;
+            }
+            
+            .sidebar-nav a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .sidebar-nav i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .sidebar-footer {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 60px;
+                padding: 20px;
+            }
+            
+            .header-bar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .user-info {
+                align-self: flex-end;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .admin-card {
+                padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <h1>STREET 13</h1>
+            <h2>Admin Dashboard</h2>
+            <input type="email" id="loginEmail" class="login-input" placeholder="Email Address" autocomplete="username">
+            <input type="password" id="loginPassword" class="login-input" placeholder="Password" autocomplete="current-password">
+            <button onclick="login()" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <p id="loginError" class="error-message"></p>
+        </div>
+    </div>
+    
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-container" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>STREET 13</h2>
+                <p>Admin Panel</p>
+            </div>
+            
+            <ul class="sidebar-nav">
+                <li><a href="#" onclick="showSection('dashboard'); return false;" class="active">
+                    <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('content'); return false;">
+                    <i class="fas fa-edit"></i> <span>Edit Content</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('menu'); return false;">
+                    <i class="fas fa-utensils"></i> <span>Menu Items</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('messages'); return false;">
+                    <i class="fas fa-envelope"></i> <span>Messages</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('orders'); return false;">
+                    <i class="fas fa-shopping-cart"></i> <span>Orders</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('settings'); return false;">
+                    <i class="fas fa-cog"></i> <span>Settings</span>
+                </a></li>
+                <li><a href="index.html" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> <span>View Site</span>
+                </a></li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                Street 13 System<br>
+                Launch48 & M8Web.Dev
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header-bar">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">S</div>
+                    <button onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Dashboard Section -->
+            <div id="dashboardSection" class="section-content active">
+                <div class="admin-card">
+                    <h3><i class="fas fa-chart-line"></i> Welcome Back!</h3>
+                    <p>Welcome to the Street 13 admin panel. Here you can manage your website content, menu items, and view customer interactions.</p>
+                    <p id="lastLoginInfo" style="color: #666; font-size: 0.9rem; margin-top: 10px;"></p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="stat-number" id="totalMessages">0</div>
+                        <div class="stat-label">Messages</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="stat-number" id="totalMenuItems">0</div>
+                        <div class="stat-label">Menu Items</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-number" id="totalOrders">0</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-number" id="revenue">₦0</div>
+                        <div class="stat-label">Revenue</div>
+                    </div>
+                </div>
+                
+                <div class="admin-card">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <div id="recentActivity">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Edit Content Section -->
+            <div id="contentSection" class="section-content">
+                <div class="admin-card">
+                    <h3><i class="fas fa-home"></i> Hero Section</h3>
+                    <div class="form-group">
+                        <label>Business Name</label>
+                        <input type="text" id="editBusinessName" class="form-control" placeholder="Street 13">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Hero Title</label>
+                            <input type="text" id="editHeroTitle" class="form-control" placeholder="Fast Food On The Go">
+                        </div>
+                        <div class="form-group">
+                            <label>Hero Tagline</label>
+                            <input type="text" id="editHeroTagline" class="form-control" placeholder="Quick bites for busy streets">
+                        </div>
+                    </div>
+                    <button onclick="saveHeroContent()" class="btn-save">
+                        <i class="fas fa-save"></i> Save Hero Content
+                    </button>
+                </div>
+                
+                <div class="admin-card">
+                    <h3><i class="fas fa-info-circle"></i> About Section</h3>
+                    <div class="form-group">
+                        <label>About Text (First Paragraph)</label>
+                        <textarea id="editAboutText" class="form-control" placeholder="Tell your story..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>About Text (Second Paragraph)</label>
+                        <textarea id="editAboutText2" class="form-control" placeholder="More details about your business..."></textarea>
+                    </div>
+                    <button onclick="saveAboutContent()" class="btn-save">
+                        <i class="fas fa-save"></i> Save About Content
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Menu Items Section -->
+            <div id="menuSection" class="section-content">
+                <div class="admin-card">
+                    <h3><i class="fas fa-plus-circle"></i> Add New Menu Item</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Item Name</label>
+                            <input type="text" id="newItemName" class="form-control" placeholder="Traffic Light Burger">
+                        </div>
+                        <div class="form-group">
+                            <label>Price (₦)</label>
+                            <input type="number" id="newItemPrice" class="form-control" placeholder="3200">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="newItemCategory" class="form-control">
+                                <option value="burgers">Burgers</option>
+                                <option value="wraps">Wraps</option>
+                                <option value="sides">Sides</option>
+                                <option value="drinks">Drinks</option>
+                                <option value="pizza">Pizza</option>
+                                <option value="healthy">Healthy</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="newItemDesc" class="form-control" placeholder="Describe this item..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Image URL</label>
+                            <input type="text" id="newItemImageUrl" class="form-control" placeholder="https://images.unsplash.com/photo-...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tags (comma separated)</label>
+                            <input type="text" id="newItemTags" class="form-control" placeholder="BESTSELLER,SPICY">
+                        </div>
+                        <div class="form-group">
+                            <label>Stock Quantity</label>
+                            <input type="number" id="newItemStock" class="form-control" placeholder="50" value="50">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="newItemFeatured"> Featured Item
+                        </label>
+                        <label style="margin-left: 20px;">
+                            <input type="checkbox" id="newItemActive" checked> Active
+                        </label>
+                    </div>
+                    <button onclick="addMenuItem()" class="btn-save">
+                        <i class="fas fa-plus"></i> Add Menu Item
+                    </button>
+                </div>
+                
+                <div class="admin-card">
+                    <h3><i class="fas fa-list"></i> Current Menu Items</h3>
+                    <div id="currentMenuItems">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Messages Section -->
+            <div id="messagesSection" class="section-content">
+                <div class="admin-card">
+                    <h3><i class="fas fa-inbox"></i> Customer Messages</h3>
+                    <div class="messages-list" id="messagesList">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Orders Section -->
+            <div id="ordersSection" class="section-content">
+                <div class="admin-card">
+                    <h3><i class="fas fa-receipt"></i> Recent Orders</h3>
+                    <div class="orders-list" id="ordersList">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Section -->
+            <div id="settingsSection" class="section-content">
+                <div class="admin-card">
+                    <h3><i class="fas fa-address-book"></i> Contact Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="editPhoneNumber" class="form-control" placeholder="+234 813 131 3131">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="editEmail" class="form-control" placeholder="contact@street13.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Business Address</label>
+                        <textarea id="editAddress" class="form-control" placeholder="13 Food Street, Lagos Island, Lagos"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Business Hours</label>
+                            <input type="text" id="editBusinessHours" class="form-control" placeholder="Mon-Sun: 7AM - 11PM">
+                        </div>
+                        <div class="form-group">
+                            <label>WhatsApp Number</label>
+                            <input type="text" id="editWhatsapp" class="form-control" placeholder="2348131313131">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Fee (₦)</label>
+                        <input type="number" id="editDeliveryFee" class="form-control" placeholder="500">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum Order (₦)</label>
+                        <input type="number" id="editMinOrder" class="form-control" placeholder="1000">
+                    </div>
+                    <button onclick="saveSettings()" class="btn-save">
+                        <i class="fas fa-save"></i> Save All Settings
+                    </button>
+                </div>
+                
+                <div class="admin-card">
+                    <h3><i class="fas fa-hashtag"></i> Social Media</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Instagram Username</label>
+                            <input type="text" id="editInstagram" class="form-control" placeholder="street13">
+                        </div>
+                        <div class="form-group">
+                            <label>Twitter Username</label>
+                            <input type="text" id="editTwitter" class="form-control" placeholder="street13">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Facebook Username</label>
+                            <input type="text" id="editFacebook" class="form-control" placeholder="street13">
+                        </div>
+                        <div class="form-group">
+                            <label>TikTok Username</label>
+                            <input type="text" id="editTiktok" class="form-control" placeholder="street13">
+                        </div>
+                    </div>
+                    <button onclick="saveSocialMedia()" class="btn-save">
+                        <i class="fas fa-save"></i> Save Social Media
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Firebase Configuration - MUST MATCH INDEX.HTML
+        const firebaseConfig = {
+            apiKey: "AIzaSyCcVOxMeTgcwpy7gM5zaJ_cheocvaIXIzE",
+            authDomain: "street-13-restaurant.firebaseapp.com",
+            projectId: "street-13-restaurant",
+            storageBucket: "street-13-restaurant.firebasestorage.app",
+            messagingSenderId: "848426454008",
+            appId: "1:848426454008:web:ae8ded40e42f77ac92240d"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        console.log("Firebase Admin initialized");
+    </script>
+    
+    <!-- Admin JavaScript -->
+    <script>
+        // Global Variables
+        let currentUser = null;
+        let adminData = {};
+        
+        // ====================
+        // AUTHENTICATION
+        // ====================
+        
+        // Authentication check - Prevent auto-login
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is logged in
+                console.log("User logged in:", user.email);
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'flex';
+                document.getElementById('userAvatar').textContent = user.email.charAt(0).toUpperCase();
+                loadAdminData();
+                
+                // Update last login
+                const lastLogin = localStorage.getItem('lastLogin');
+                if (lastLogin) {
+                    document.getElementById('lastLoginInfo').textContent = `Last login: ${lastLogin}`;
+                }
+                localStorage.setItem('lastLogin', new Date().toLocaleString());
+                
+            } else {
+                // User is NOT logged in - SHOW LOGIN PAGE
+                console.log("No user logged in");
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('adminDashboard').style.display = 'none';
+                
+                // Clear any stored credentials
+                localStorage.removeItem('adminToken');
+            }
+        });
+        
+        // Login function - FIXED VERSION
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorElement = document.getElementById('loginError');
+            
+            // Clear previous error
+            errorElement.textContent = '';
+            
+            // Validation
+            if (!email || !password) {
+                errorElement.textContent = 'Please enter both email and password';
+                return;
+            }
+            
+            // Show loading
+            const loginBtn = document.querySelector('.login-btn');
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            loginBtn.disabled = true;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Login successful
+                    errorElement.textContent = '';
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                    showNotification('Login successful!', 'success');
+                })
+                .catch((error) => {
+                    console.error('Login error:', error);
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                    
+                    // User-friendly error messages
+                    const errorMessages = {
+                        'auth/invalid-email': 'Invalid email address format',
+                        'auth/user-disabled': 'This account has been disabled',
+                        'auth/user-not-found': 'No account found with this email',
+                        'auth/wrong-password': 'Incorrect password',
+                        'auth/network-request-failed': 'Network error. Please check your internet connection',
+                        'auth/too-many-requests': 'Too many failed attempts. Try again later'
+                    };
+                    
+                    errorElement.textContent = errorMessages[error.code] || 'Login failed. Please try again.';
+                });
+        }
+        
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                auth.signOut()
+                    .then(() => {
+                        showNotification('Logged out successfully', 'info');
+                    })
+                    .catch((error) => {
+                        console.error('Logout error:', error);
+                        showNotification('Error logging out', 'error');
+                    });
+            }
+        }
+        
+        // ====================
+        // NAVIGATION
+        // ====================
+        
+        // Show different sections
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId + 'Section').style.display = 'block';
+            
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'content': 'Edit Content',
+                'menu': 'Menu Items',
+                'messages': 'Messages',
+                'orders': 'Orders',
+                'settings': 'Settings'
+            };
+            document.getElementById('pageTitle').textContent = titles[sectionId] || 'Admin Panel';
+            
+            // Update active link in sidebar
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate the clicked link
+            const activeLink = document.querySelector(`.sidebar-nav a[onclick*="${sectionId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Load data for specific sections
+            if (sectionId === 'dashboard') {
+                loadDashboardStats();
+                loadRecentActivity();
+            } else if (sectionId === 'menu') {
+                loadMenuItemsForAdmin();
+            } else if (sectionId === 'messages') {
+                loadMessagesForAdmin();
+            } else if (sectionId === 'orders') {
+                loadOrdersForAdmin();
+            }
+        }
+        
+        // ====================
+        // DATA LOADING
+        // ====================
+        
+        // Load admin data
+        async function loadAdminData() {
+            try {
+                // Load settings
+                const settingsDoc = await db.collection('settings').doc('config').get();
+                
+                if (settingsDoc.exists()) {
+                    adminData.settings = settingsDoc.data();
+                    
+                    // Populate forms
+                    populateForm('editBusinessName', adminData.settings.businessName);
+                    populateForm('editHeroTitle', adminData.settings.heroTitle);
+                    populateForm('editHeroTagline', adminData.settings.heroTagline);
+                    populateForm('editAboutText', adminData.settings.aboutText);
+                    populateForm('editAboutText2', adminData.settings.aboutText2);
+                    populateForm('editPhoneNumber', adminData.settings.phoneNumber);
+                    populateForm('editEmail', adminData.settings.email);
+                    populateForm('editAddress', adminData.settings.address);
+                    populateForm('editWhatsapp', adminData.settings.whatsappNumber);
+                    populateForm('editBusinessHours', adminData.settings.businessHours);
+                    populateForm('editDeliveryFee', adminData.settings.deliveryFee);
+                    populateForm('editMinOrder', adminData.settings.minOrderAmount);
+                    
+                    // Populate social media
+                    const social = adminData.settings.socialMedia || {};
+                    populateForm('editInstagram', social.instagram);
+                    populateForm('editTwitter', social.twitter);
+                    populateForm('editFacebook', social.facebook);
+                    populateForm('editTiktok', social.tiktok);
+                }
+                
+                // Load initial stats
+                await loadDashboardStats();
+                
+                showNotification('Admin data loaded successfully', 'success');
+                
+            } catch (error) {
+                console.error('Error loading admin data:', error);
+                showNotification('Error loading data. Please refresh.', 'error');
+            }
+        }
+        
+        // Populate form field
+        function populateForm(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (element && value !== undefined && value !== null) {
+                element.value = value;
+            }
+        }
+        
+        // Load dashboard statistics
+        async function loadDashboardStats() {
+            try {
+                // Count messages
+                const messagesSnapshot = await db.collection('messages').get();
+                document.getElementById('totalMessages').textContent = messagesSnapshot.size;
+                
+                // Count menu items
+                const menuSnapshot = await db.collection('menuItems').where('active', '==', true).get();
+                document.getElementById('totalMenuItems').textContent = menuSnapshot.size;
+                
+                // Count orders and calculate revenue
+                const ordersSnapshot = await db.collection('orders').get();
+                let totalOrders = 0;
+                let totalRevenue = 0;
+                
+                ordersSnapshot.forEach(doc => {
+                    const order = doc.data();
+                    totalOrders++;
+                    if (order.total) {
+                        totalRevenue += order.total;
+                    }
+                });
+                
+                document.getElementById('totalOrders').textContent = totalOrders;
+                document.getElementById('revenue').textContent = `₦${totalRevenue.toLocaleString()}`;
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        // Load recent activity
+        async function loadRecentActivity() {
+            try {
+                const container = document.getElementById('recentActivity');
+                
+                // Get recent messages
+                const messagesQuery = db.collection('messages')
+                    .orderBy('createdAt', 'desc')
+                    .limit(5);
+                
+                const messagesSnapshot = await messagesQuery.get();
+                
+                if (messagesSnapshot.empty) {
+                    container.innerHTML = '<p>No recent activity</p>';
+                    return;
+                }
+                
+                let html = '<div style="display: grid; gap: 10px;">';
+                
+                messagesSnapshot.forEach(doc => {
+                    const message = doc.data();
+                    const date = message.createdAt ? 
+                        message.createdAt.toDate().toLocaleString() : 
+                        'Unknown date';
+                    
+                    html += `
+                        <div style="padding: 12px; background: #f9f9f9; border-radius: 6px; border-left: 3px solid var(--primary-red);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong style="color: var(--primary-red);">${message.name || 'Customer'}</strong>
+                                <small style="color: #888;">${date}</small>
+                            </div>
+                            <div style="color: #555; font-size: 0.9rem;">${message.message?.substring(0, 80) || 'No message'}${message.message?.length > 80 ? '...' : ''}</div>
+                            <span class="message-type" style="font-size: 0.7rem; margin-top: 5px;">${message.type || 'contact'}</span>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading activity:', error);
+                document.getElementById('recentActivity').innerHTML = '<p>Error loading activity</p>';
+            }
+        }
+        
+        // ====================
+        // CONTENT MANAGEMENT
+        // ====================
+        
+        // Save hero content
+        async function saveHeroContent() {
+            const businessName = document.getElementById('editBusinessName').value;
+            const heroTitle = document.getElementById('editHeroTitle').value;
+            const heroTagline = document.getElementById('editHeroTagline').value;
+            
+            try {
+                await db.collection('settings').doc('config').set({
+                    businessName: businessName,
+                    heroTitle: heroTitle,
+                    heroTagline: heroTagline,
+                    updatedAt: new Date()
+                }, { merge: true });
+                
+                showNotification('Hero content saved successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Error saving hero content:', error);
+                showNotification('Error saving content: ' + error.message, 'error');
+            }
+        }
+        
+        // Save about content
+        async function saveAboutContent() {
+            const aboutText = document.getElementById('editAboutText').value;
+            const aboutText2 = document.getElementById('editAboutText2').value;
+            
+            try {
+                await db.collection('settings').doc('config').set({
+                    aboutText: aboutText,
+                    aboutText2: aboutText2,
+                    updatedAt: new Date()
+                }, { merge: true });
+                
+                showNotification('About content saved!', 'success');
+                
+            } catch (error) {
+                console.error('Error saving about content:', error);
+                showNotification('Error saving about text: ' + error.message, 'error');
+            }
+        }
+        
+        // ====================
+        // MENU MANAGEMENT
+        // ====================
+        
+        // Load menu items for admin
+        async function loadMenuItemsForAdmin() {
+            try {
+                const container = document.getElementById('currentMenuItems');
+                container.innerHTML = '<div class="loading-spinner"></div>';
+                
+                const snapshot = await db.collection('menuItems')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">No menu items yet. Add your first item!</p>';
+                    return;
+                }
+                
+                let html = '<div class="menu-items-list">';
+                snapshot.forEach(doc => {
+                    const item = doc.data();
+                    const date = item.createdAt ? 
+                        item.createdAt.toDate().toLocaleDateString() : 
+                        'Unknown date';
+                    
+                    html += `
+                        <div class="menu-item-card">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">${item.name || 'Unnamed Item'}</div>
+                                <div class="menu-item-desc">${item.description || 'No description'}</div>
+                                <div class="menu-item-meta">
+                                    <span class="menu-item-price">₦${parseInt(item.price || 0).toLocaleString()}</span>
+                                    <span class="menu-item-category">${item.category || 'uncategorized'}</span>
+                                    <span style="color: #888;">Added: ${date}</span>
+                                    ${item.featured ? '<span style="color: var(--traffic-yellow); font-weight: bold;">★ Featured</span>' : ''}
+                                    ${!item.active ? '<span style="color: var(--primary-red);">(Inactive)</span>' : ''}
+                                </div>
+                            </div>
+                            <div>
+                                <button onclick="editMenuItem('${doc.id}')" class="btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteMenuItem('${doc.id}')" class="btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading menu items:', error);
+                document.getElementById('currentMenuItems').innerHTML = 
+                    '<p style="color: var(--primary-red); text-align: center; padding: 20px;">Error loading menu items</p>';
+            }
+        }
+        
+        // Add menu item
+        async function addMenuItem() {
+            const name = document.getElementById('newItemName').value;
+            const description = document.getElementById('newItemDesc').value;
+            const price = document.getElementById('newItemPrice').value;
+            const category = document.getElementById('newItemCategory').value;
+            const imageUrl = document.getElementById('newItemImageUrl').value;
+            const tags = document.getElementById('newItemTags').value;
+            const stock = document.getElementById('newItemStock').value;
+            const featured = document.getElementById('newItemFeatured').checked;
+            const active = document.getElementById('newItemActive').checked;
+            
+            if (!name || !price) {
+                showNotification('Please enter at least a name and price', 'error');
+                return;
+            }
+            
+            try {
+                await db.collection('menuItems').add({
+                    name: name,
+                    description: description || '',
+                    price: parseFloat(price),
+                    category: category || 'burgers',
+                    imageUrl: imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1480&q=80',
+                    tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+                    stock: parseInt(stock) || 50,
+                    featured: featured || false,
+                    active: active,
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                });
+                
+                // Clear form
+                document.getElementById('newItemName').value = '';
+                document.getElementById('newItemDesc').value = '';
+                document.getElementById('newItemPrice').value = '';
+                document.getElementById('newItemImageUrl').value = '';
+                document.getElementById('newItemTags').value = '';
+                document.getElementById('newItemStock').value = '50';
+                document.getElementById('newItemFeatured').checked = false;
+                document.getElementById('newItemActive').checked = true;
+                
+                // Reload menu items and stats
+                await loadMenuItemsForAdmin();
+                await loadDashboardStats();
+                
+                showNotification('Menu item added successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Error adding menu item:', error);
+                showNotification('Error adding menu item: ' + error.message, 'error');
+            }
+        }
+        
+        // Edit menu item
+        async function editMenuItem(itemId) {
+            try {
+                const itemDoc = await db.collection('menuItems').doc(itemId).get();
+                if (itemDoc.exists) {
+                    const item = itemDoc.data();
+                    
+                    // Populate edit form (create one if it doesn't exist)
+                    let editForm = document.getElementById('editItemForm');
+                    if (!editForm) {
+                        editForm = document.createElement('div');
+                        editForm.id = 'editItemForm';
+                        editForm.className = 'admin-card';
+                        editForm.innerHTML = `
+                            <h3><i class="fas fa-edit"></i> Edit Menu Item</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Item Name</label>
+                                    <input type="text" id="editItemName" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Price (₦)</label>
+                                    <input type="number" id="editItemPrice" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select id="editItemCategory" class="form-control">
+                                        <option value="burgers">Burgers</option>
+                                        <option value="wraps">Wraps</option>
+                                        <option value="sides">Sides</option>
+                                        <option value="drinks">Drinks</option>
+                                        <option value="pizza">Pizza</option>
+                                        <option value="healthy">Healthy</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="editItemDesc" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Image URL</label>
+                                <input type="text" id="editItemImageUrl" class="form-control">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tags (comma separated)</label>
+                                    <input type="text" id="editItemTags" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Stock Quantity</label>
+                                    <input type="number" id="editItemStock" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="editItemFeatured"> Featured Item
+                                </label>
+                                <label style="margin-left: 20px;">
+                                    <input type="checkbox" id="editItemActive"> Active
+                                </label>
+                            </div>
+                            <button onclick="updateMenuItem('${itemId}')" class="btn-save">
+                                <i class="fas fa-save"></i> Update Menu Item
+                            </button>
+                            <button onclick="cancelEdit()" class="btn-secondary" style="margin-left: 10px;">
+                                Cancel
+                            </button>
+                        `;
+                        document.getElementById('menuSection').prepend(editForm);
+                    }
+                    
+                    // Populate form with existing data
+                    document.getElementById('editItemName').value = item.name || '';
+                    document.getElementById('editItemPrice').value = item.price || '';
+                    document.getElementById('editItemCategory').value = item.category || 'burgers';
+                    document.getElementById('editItemDesc').value = item.description || '';
+                    document.getElementById('editItemImageUrl').value = item.imageUrl || '';
+                    document.getElementById('editItemTags').value = (item.tags || []).join(', ');
+                    document.getElementById('editItemStock').value = item.stock || 50;
+                    document.getElementById('editItemFeatured').checked = item.featured || false;
+                    document.getElementById('editItemActive').checked = item.active !== false;
+                    
+                    // Scroll to edit form
+                    editForm.scrollIntoView({ behavior: 'smooth' });
+                    
+                    showNotification('Edit the menu item below', 'info');
+                }
+            } catch (error) {
+                console.error('Error loading menu item for edit:', error);
+                showNotification('Error loading menu item for edit', 'error');
+            }
+        }
+        
+        // Update menu item
+        async function updateMenuItem(itemId) {
+            const name = document.getElementById('editItemName').value;
+            const description = document.getElementById('editItemDesc').value;
+            const price = document.getElementById('editItemPrice').value;
+            const category = document.getElementById('editItemCategory').value;
+            const imageUrl = document.getElementById('editItemImageUrl').value;
+            const tags = document.getElementById('editItemTags').value;
+            const stock = document.getElementById('editItemStock').value;
+            const featured = document.getElementById('editItemFeatured').checked;
+            const active = document.getElementById('editItemActive').checked;
+            
+            if (!name || !price) {
+                showNotification('Please enter at least a name and price', 'error');
+                return;
+            }
+            
+            try {
+                await db.collection('menuItems').doc(itemId).update({
+                    name: name,
+                    description: description || '',
+                    price: parseFloat(price),
+                    category: category || 'burgers',
+                    imageUrl: imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1480&q=80',
+                    tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+                    stock: parseInt(stock) || 50,
+                    featured: featured || false,
+                    active: active,
+                    updatedAt: new Date()
+                });
+                
+                // Remove edit form
+                const editForm = document.getElementById('editItemForm');
+                if (editForm) {
+                    editForm.remove();
+                }
+                
+                // Reload menu items
+                await loadMenuItemsForAdmin();
+                
+                showNotification('Menu item updated successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Error updating menu item:', error);
+                showNotification('Error updating menu item: ' + error.message, 'error');
+            }
+        }
+        
+        // Cancel edit
+        function cancelEdit() {
+            const editForm = document.getElementById('editItemForm');
+            if (editForm) {
+                editForm.remove();
+            }
+        }
+        
+        // Delete menu item
+        async function deleteMenuItem(itemId) {
+            if (confirm('Are you sure you want to delete this menu item? This action cannot be undone.')) {
+                try {
+                    await db.collection('menuItems').doc(itemId).delete();
+                    await loadMenuItemsForAdmin();
+                    await loadDashboardStats();
+                    showNotification('Menu item deleted!', 'success');
+                } catch (error) {
+                    console.error('Error deleting menu item:', error);
+                    showNotification('Error deleting menu item: ' + error.message, 'error');
+                }
+            }
+        }
+        
+        // ====================
+        // MESSAGES MANAGEMENT
+        // ====================
+        
+        // Load messages for admin
+        async function loadMessagesForAdmin() {
+            try {
+                const container = document.getElementById('messagesList');
+                container.innerHTML = '<div class="loading-spinner"></div>';
+                
+                const snapshot = await db.collection('messages')
+                    .orderBy('createdAt', 'desc')
+                    .limit(50)
+                    .get();
+                
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="text-align: center; color: #666; padding: 30px;">No messages yet.</p>';
+                    return;
+                }
+                
+                let html = '';
+                snapshot.forEach(doc => {
+                    const message = doc.data();
+                    const date = message.createdAt ? 
+                        message.createdAt.toDate().toLocaleString() : 
+                        'Unknown date';
+                    
+                    html += `
+                        <div class="message-item ${message.read ? '' : 'unread'}">
+                            <div class="message-header">
+                                <span class="message-sender">${message.name || 'Anonymous'}</span>
+                                <span class="message-date">${date}</span>
+                            </div>
+                            <div class="message-body">
+                                <p><strong>Email:</strong> ${message.email || 'No email'}</p>
+                                ${message.phone ? `<p><strong>Phone:</strong> ${message.phone}</p>` : ''}
+                                <p><strong>Message:</strong> ${message.message || 'No message'}</p>
+                                <span class="message-type">${message.type || 'contact'}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                container.innerHTML = '<p style="color: var(--primary-red); text-align: center; padding: 30px;">Error loading messages</p>';
+            }
+        }
+        
+        // ====================
+        // ORDERS MANAGEMENT
+        // ====================
+        
+        // Load orders for admin
+        async function loadOrdersForAdmin() {
+            try {
+                const container = document.getElementById('ordersList');
+                container.innerHTML = '<div class="loading-spinner"></div>';
+                
+                const snapshot = await db.collection('orders')
+                    .orderBy('createdAt', 'desc')
+                    .limit(20)
+                    .get();
+                
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="text-align: center; color: #666; padding: 30px;">No orders yet.</p>';
+                    return;
+                }
+                
+                let html = '';
+                snapshot.forEach(doc => {
+                    const order = doc.data();
+                    const date = order.createdAt ? 
+                        order.createdAt.toDate().toLocaleString() : 
+                        'Unknown date';
+                    const status = order.status || 'pending';
+                    
+                    html += `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="order-customer">${order.customerName || order.name || 'Customer'}</div>
+                                <div class="order-status ${status}">${status.toUpperCase()}</div>
+                            </div>
+                            
+                            <div class="order-items">
+                                ${order.items && order.items.length > 0 ? order.items.map(item => `
+                                    <div class="order-item">
+                                        <span>${item.name || 'Item'} x${item.quantity || 1}</span>
+                                        <span>₦${((item.price || 0) * (item.quantity || 1)).toLocaleString()}</span>
+                                    </div>
+                                `).join('') : '<p>No items</p>'}
+                            </div>
+                            
+                            <div class="order-total">
+                                Total: ₦${order.total ? order.total.toLocaleString() : '0'}
+                            </div>
+                            
+                            <div style="margin-top: 15px; font-size: 0.85rem; color: #666;">
+                                <div><strong>Phone:</strong> ${order.customerPhone || order.phone || 'N/A'}</div>
+                                <div><strong>Email:</strong> ${order.customerEmail || order.email || 'N/A'}</div>
+                                <div><strong>Address:</strong> ${order.deliveryAddress || order.address || 'N/A'}</div>
+                                ${order.notes || order.instructions ? `<div><strong>Instructions:</strong> ${order.notes || order.instructions}</div>` : ''}
+                                <div style="margin-top: 10px; color: #888;">Placed: ${date}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                container.innerHTML = '<p style="color: var(--primary-red); text-align: center; padding: 30px;">Error loading orders</p>';
+            }
+        }
+        
+        // ====================
+        // SETTINGS
+        // ====================
+        
+        // Save all settings
+        async function saveSettings() {
+            const settings = {
+                phoneNumber: document.getElementById('editPhoneNumber').value,
+                email: document.getElementById('editEmail').value,
+                address: document.getElementById('editAddress').value,
+                whatsappNumber: document.getElementById('editWhatsapp').value,
+                businessHours: document.getElementById('editBusinessHours').value,
+                deliveryFee: parseFloat(document.getElementById('editDeliveryFee').value) || 500,
+                minOrderAmount: parseFloat(document.getElementById('editMinOrder').value) || 1000,
+                updatedAt: new Date()
+            };
+            
+            try {
+                await db.collection('settings').doc('config').set(settings, { merge: true });
+                showNotification('Settings saved successfully!', 'success');
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                showNotification('Error saving settings: ' + error.message, 'error');
+            }
+        }
+        
+        // Save social media
+        async function saveSocialMedia() {
+            const socialMedia = {
+                instagram: document.getElementById('editInstagram').value,
+                twitter: document.getElementById('editTwitter').value,
+                facebook: document.getElementById('editFacebook').value,
+                tiktok: document.getElementById('editTiktok').value
+            };
+            
+            try {
+                await db.collection('settings').doc('config').set({
+                    socialMedia: socialMedia,
+                    updatedAt: new Date()
+                }, { merge: true });
+                showNotification('Social media saved successfully!', 'success');
+            } catch (error) {
+                console.error('Error saving social media:', error);
+                showNotification('Error saving social media: ' + error.message, 'error');
+            }
+        }
+        
+        // ====================
+        // UTILITIES
+        // ====================
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            // Remove existing notification
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icons = {
+                'success': 'fas fa-check-circle',
+                'error': 'fas fa-exclamation-circle',
+                'info': 'fas fa-info-circle'
+            };
+            
+            notification.innerHTML = `
+                <i class="${icons[type] || 'fas fa-info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.getElementById('notificationContainer').appendChild(notification);
+            
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 4000);
+        }
+        
+        // ====================
+        // INITIALIZATION
+        // ====================
+        
+        // Make functions available globally
+        window.login = login;
+        window.logout = logout;
+        window.showSection = showSection;
+        window.saveHeroContent = saveHeroContent;
+        window.saveAboutContent = saveAboutContent;
+        window.addMenuItem = addMenuItem;
+        window.editMenuItem = editMenuItem;
+        window.updateMenuItem = updateMenuItem;
+        window.cancelEdit = cancelEdit;
+        window.deleteMenuItem = deleteMenuItem;
+        window.saveSettings = saveSettings;
+        window.saveSocialMedia = saveSocialMedia;
+        
+        console.log("Street 13 Admin panel initialized");
+        
+        // Auto-select dashboard on load if logged in
+        setTimeout(() => {
+            if (auth.currentUser) {
+                showSection('dashboard');
+            }
+        }, 100);
+    </script>
+</body>
+</html>
