@@ -130,7 +130,7 @@
 
         .light.red {
             background: var(--primary-red);
-            box-shadow: 0 0 20px rgba(230, 57, 70, 0.3);
+            box-shadow: 0 0 20px rgba(253, 2, 2, 0.959);
         }
 
         .light.yellow {
@@ -745,6 +745,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
+        /* FIXED: Form inputs compatibility */
         .form-group input,
         .form-group textarea {
             width: 100%;
@@ -755,9 +756,52 @@
             font-size: 16px;
             transition: all 0.3s ease;
             background: white;
+            -webkit-appearance: none;
+            appearance: none;
+            touch-action: manipulation;
+            user-select: text;
+            -webkit-user-select: text;
+            position: relative;
+            z-index: 10;
         }
 
-        /* FIXED SELECT DROPDOWN STYLES - UPDATED FOR BETTER COMPATIBILITY */
+        /* FIXED: Phone input specific fix */
+        #customerPhone {
+            background: white !important;
+            touch-action: manipulation;
+            pointer-events: auto !important;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
+
+        #customerPhone:focus,
+        #customerPhone:active {
+            outline: 2px solid var(--primary-red) !important;
+            outline-offset: 2px;
+            background: white !important;
+            border-color: var(--primary-red) !important;
+        }
+
+        /* FIXED: Special instructions textarea mobile fix */
+        #orderNotes {
+            min-height: 120px;
+            resize: vertical;
+            touch-action: manipulation;
+            pointer-events: auto !important;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            background: white !important;
+        }
+
+        #orderNotes:focus,
+        #orderNotes:active {
+            outline: 2px solid var(--primary-red) !important;
+            outline-offset: 2px;
+            background: white !important;
+            border-color: var(--primary-red) !important;
+        }
+
+        /* FIXED SELECT DROPDOWN STYLES */
         .form-group select {
             width: 100%;
             padding: 16px 20px;
@@ -782,7 +826,6 @@
             z-index: 10;
         }
 
-        /* Create a custom wrapper for better mobile handling */
         .select-wrapper {
             position: relative;
             width: 100%;
@@ -822,20 +865,27 @@
             color: white;
         }
 
-        /* Hover state for select */
         .form-group select:hover {
             border-color: var(--primary-red);
         }
 
-        /* iOS-specific fixes */
         @supports (-webkit-touch-callout: none) {
-            .form-group select {
-                font-size: 16px; /* Prevents zoom on focus */
-                padding: 16px 45px 16px 20px;
+            .form-group select,
+            .form-group input,
+            .form-group textarea {
+                font-size: 16px !important;
+            }
+            
+            #customerPhone,
+            #orderNotes,
+            #customerName,
+            #customerEmail,
+            #deliveryAddress {
+                padding: 16px !important;
+                min-height: 56px !important;
             }
         }
 
-        /* Firefox fixes */
         @-moz-document url-prefix() {
             .form-group select {
                 text-indent: 0;
@@ -1269,6 +1319,35 @@
                 gap: 20px;
             }
             
+            /* FIXED: Mobile form input improvements */
+            #customerPhone,
+            #orderNotes,
+            #customerName,
+            #customerEmail,
+            #deliveryAddress {
+                font-size: 16px !important;
+                padding: 16px !important;
+                min-height: 56px !important;
+                line-height: 1.5 !important;
+                background: white !important;
+                touch-action: manipulation !important;
+                pointer-events: auto !important;
+                user-select: text !important;
+                -webkit-user-select: text !important;
+            }
+            
+            #orderNotes {
+                min-height: 100px !important;
+            }
+            
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                position: relative;
+                z-index: 100 !important;
+                background: white !important;
+            }
+            
             .floating-whatsapp {
                 bottom: 25px;
                 right: 25px;
@@ -1402,6 +1481,13 @@
             
             .order-section {
                 padding: 25px 15px;
+            }
+            
+            /* Ensure form inputs are touch-friendly on very small screens */
+            .form-group input,
+            .form-group textarea {
+                padding: 14px 16px !important;
+                min-height: 50px !important;
             }
         }
 
@@ -1560,8 +1646,29 @@
             .form-group input,
             .form-group select,
             .form-group textarea {
-                font-size: 16px; /* Prevents iOS zoom */
+                font-size: 16px !important;
             }
+            
+            /* FIXED: Ensure inputs are fully interactive on touch devices */
+            #customerPhone,
+            #orderNotes,
+            #customerName,
+            #customerEmail,
+            #deliveryAddress {
+                touch-action: manipulation !important;
+                pointer-events: auto !important;
+                user-select: text !important;
+                -webkit-user-select: text !important;
+            }
+        }
+        
+        /* FIXED: Remove any potential blocking overlays */
+        input:not([disabled]):not([readonly]),
+        textarea:not([disabled]):not([readonly]),
+        select:not([disabled]) {
+            opacity: 1 !important;
+            cursor: text !important;
+            pointer-events: auto !important;
         }
     </style>
 </head>
@@ -1588,13 +1695,14 @@
                 <a href="#order">Order</a>
                 <a href="#about">About</a>
                 <a href="#contact">Contact</a>
-            </div>
-            
-            <div class="nav-cta">
-                <div class="plate-number">STR33T13</div>
                 <a href="admin.html" class="btn-secondary">
                     <i class="fas fa-lock"></i> Admin
                 </a>
+            </div>
+            
+            <div class="nav-links">
+                <div class="plate-number">STR33T13</div>
+                
             </div>
         </div>
     </nav>
@@ -1999,8 +2107,57 @@
             // Initialize animations
             initAnimations();
             
+            // FIXED: Force enable form inputs
+            forceEnableFormInputs();
+            
             console.log('STREET 13 - Ready to serve!');
         });
+
+        // ===== FIXED: FORCE ENABLE FORM INPUTS =====
+        function forceEnableFormInputs() {
+            // Force enable all form inputs
+            const problemInputs = ['customerPhone', 'orderNotes', 'customerName', 'customerEmail', 'deliveryAddress'];
+            
+            problemInputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    // Remove all event listeners by cloning
+                    const newInput = input.cloneNode(true);
+                    input.parentNode.replaceChild(newInput, input);
+                    
+                    // Re-enable the new input
+                    const updatedInput = document.getElementById(inputId);
+                    if (updatedInput) {
+                        updatedInput.disabled = false;
+                        updatedInput.readOnly = false;
+                        updatedInput.style.pointerEvents = 'auto';
+                        updatedInput.style.userSelect = 'text';
+                        updatedInput.style.webkitUserSelect = 'text';
+                        updatedInput.style.opacity = '1';
+                        updatedInput.style.background = 'white';
+                        updatedInput.style.cursor = 'text';
+                        
+                        // Add event listeners for debugging
+                        updatedInput.addEventListener('focus', function() {
+                            console.log(`${inputId} focused`);
+                            this.style.borderColor = 'var(--primary-red)';
+                            this.style.boxShadow = '0 0 0 3px rgba(230, 57, 70, 0.1)';
+                        });
+                        
+                        updatedInput.addEventListener('input', function() {
+                            console.log(`${inputId} input: ${this.value}`);
+                        });
+                        
+                        updatedInput.addEventListener('touchstart', function(e) {
+                            e.stopPropagation();
+                            this.focus();
+                        }, { passive: true });
+                    }
+                }
+            });
+            
+            console.log('Form inputs force-enabled');
+        }
 
         // ===== MOBILE MENU =====
         function initMobileMenu() {
@@ -2717,7 +2874,7 @@
 
         // ===== EVENT LISTENERS =====
         function setupEventListeners() {
-            // Order type change - FIXED
+            // Order type change
             const orderTypeSelect = document.getElementById('orderType');
             if (orderTypeSelect) {
                 orderTypeSelect.addEventListener('change', function() {
@@ -2736,18 +2893,6 @@
                             deliveryAddress.value = '';
                         }
                     }
-                });
-                
-                // Also handle click for mobile
-                orderTypeSelect.addEventListener('click', function(e) {
-                    console.log('Dropdown clicked');
-                    // Let the browser handle the dropdown
-                });
-                
-                // Touch events for mobile
-                orderTypeSelect.addEventListener('touchstart', function(e) {
-                    console.log('Dropdown touched');
-                    this.focus();
                 });
             }
             
@@ -2771,8 +2916,18 @@
                 });
             }
             
-            // Test dropdown functionality
-            console.log('Dropdown element found:', orderTypeSelect);
+            // FIXED: Ensure form inputs are not blocked by any overlays
+            document.addEventListener('click', function(e) {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    e.stopPropagation();
+                }
+            });
+            
+            document.addEventListener('touchstart', function(e) {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    e.stopPropagation();
+                }
+            }, { passive: true });
         }
 
         // ===== ANIMATIONS =====
@@ -2858,8 +3013,26 @@
         window.clearCart = clearCart;
         window.placeOrder = placeOrder;
         
-        // ===== TOUCH DEVICE OPTIMIZATIONS =====
-        document.addEventListener('touchstart', function() {}, {passive: true});
+        // ===== DEBUGGING HELPERS =====
+        window.debugInputs = function() {
+            console.log('=== DEBUG INPUT STATUS ===');
+            const inputs = ['customerPhone', 'orderNotes', 'customerName', 'customerEmail', 'deliveryAddress'];
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    console.log(`${id}:`, {
+                        disabled: el.disabled,
+                        readOnly: el.readOnly,
+                        value: el.value,
+                        style: {
+                            pointerEvents: el.style.pointerEvents,
+                            display: el.style.display,
+                            opacity: el.style.opacity
+                        }
+                    });
+                }
+            });
+        };
     </script>
 </body>
 </html>
