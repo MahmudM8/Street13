@@ -2286,10 +2286,10 @@
                 heroTagline: "Quick bites for busy streets. Order your favorite meals and get them delivered fast.",
                 aboutText: "Born on the streets, made for the streets. Street 13 brings you quick, delicious meals that fuel your urban adventures.",
                 aboutText2: "We're committed to serving fresh, tasty meals at prices that make sense. Every dish is prepared with quality ingredients and a dash of street-smart creativity.",
-                phoneNumber: "+234 813 131 3131",
-                whatsappNumber: "2348131313131",
+                phoneNumber: "+234 810 591 9113",
+                whatsappNumber: "2348105919113",
                 email: "contact@street13.com",
-                address: "13 Food Street, Lagos Island, Lagos",
+                address: "Wuse2, Abuja, Nigeria",
                 businessHours: "Everyday: 7AM - 11PM",
                 deliveryFee: 500,
                 minOrderAmount: 1000,
@@ -2420,12 +2420,12 @@
             // Update contact info
             const businessAddress = document.getElementById('businessAddress');
             if (businessAddress) {
-                businessAddress.textContent = businessConfig.address || '13 Food Street, Lagos';
+                businessAddress.textContent = businessConfig.address || 'Wuse2, Abuja, Nigeria';
             }
             
             const businessPhone = document.getElementById('businessPhone');
             if (businessPhone) {
-                businessPhone.textContent = businessConfig.phoneNumber || '+234 813 131 3131';
+                businessPhone.textContent = businessConfig.phoneNumber || '+234 810 591 9113';
             }
             
             const businessEmail = document.getElementById('businessEmail');
@@ -2499,7 +2499,7 @@
 
         // ===== SETUP WHATSAPP LINKS =====
         function setupWhatsAppLinks() {
-            const whatsappNumber = businessConfig.whatsappNumber || '2348131313131';
+            const whatsappNumber = businessConfig.whatsappNumber || '8105919113';
             
             // Floating WhatsApp button
             const floatingBtn = document.getElementById('floatingWhatsApp');
@@ -2816,7 +2816,7 @@
                 await db.collection('orders').add(orderData);
                 
                 // Prepare WhatsApp message
-                const whatsappNumber = businessConfig.whatsappNumber || '2348131313131';
+                const whatsappNumber = businessConfig.whatsappNumber || '2348105919113';
                 let whatsappMessage = `*NEW ORDER - STREET 13*\n\n`;
                 whatsappMessage += `Order ID: ${Date.now().toString().substring(8)}\n`;
                 whatsappMessage += `Customer: ${nameValue}\n`;
