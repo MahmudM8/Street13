@@ -88,7 +88,7 @@ async function loadSettings() {
             // Setup WhatsApp button
             if (data.whatsappNumber) {
                 const whatsappBtn = document.getElementById('whatsappLaunch48');
-                whatsappBtn.href = `https://wa.me/${data.whatsappNumber}?text=Hi%20Abana%20Cafe!%20I%20saw%20your%20website%20and%20would%20like%20to%20know%20more.`;
+                whatsappBtn.href = `https://wa.me/${data.whatsappNumber}?text=Hi%20street13%20restaurant!%20I%20saw%20your%20website%20and%20would%20like%20to%20know%20more.`;
                 whatsappBtn.style.display = 'flex';
             }
             
